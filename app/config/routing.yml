@@ -1,3 +1,4 @@
-app:
-    resource: "@AppBundle/Controller/"
+mip_app:
+    resource: "@MIPAppBundle/Controller/"
     type:     annotation
+    prefix:   /

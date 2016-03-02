@@ -1,0 +1,7 @@
+services:
+    mip_app.service.compute:
+        class: MIP\AppBundle\Service\ComputeService
+
+    mip_app.service.function:
+        class: MIP\AppBundle\Service\FunctionService
+        arguments: ["@mip_app.service.compute"]
