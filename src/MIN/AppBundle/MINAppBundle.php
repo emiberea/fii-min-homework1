@@ -1,9 +1,9 @@
 <?php
 
-namespace MIP\AppBundle;
+namespace MIN\AppBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class MIPAppBundle extends Bundle
+class MINAppBundle extends Bundle
 {
 }

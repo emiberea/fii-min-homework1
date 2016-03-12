@@ -1,6 +1,6 @@
 <?php
 
-namespace MIP\AppBundle\Service;
+namespace MIN\AppBundle\Service;
 
 class ComputeService
 {

@@ -18,7 +18,7 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
 
             // application bundles
-            new MIP\AppBundle\MIPAppBundle(),
+            new MIN\AppBundle\MINAppBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {

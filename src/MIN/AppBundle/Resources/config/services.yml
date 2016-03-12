@@ -1,0 +1,7 @@
+services:
+    min_app.service.compute:
+        class: MIN\AppBundle\Service\ComputeService
+
+    min_app.service.function:
+        class: MIN\AppBundle\Service\FunctionService
+        arguments: ["@min_app.service.compute"]
