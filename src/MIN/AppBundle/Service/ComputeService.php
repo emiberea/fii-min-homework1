@@ -4,22 +4,21 @@ namespace MIN\AppBundle\Service;
 
 class ComputeService
 {
-    public function doStuff()
-    {
-
-        $binarydata = pack("nvc*", 0x1234, 0x5678, 65, 66);
-        $x = random_bytes(4);
-        $x = decbin(4);
-        return $x;
-    }
 
     public function generateN($startNumber, $endNumber, $precision)
     {
         $N = log($endNumber - $startNumber, 2) * pow(10, $precision);
+
+        return $N;
+//        var_dump(strval(log($endNumber - $startNumber, 2)));die;
+        $term1 = gmp_init(strval(log($endNumber - $startNumber, 2)));
+        $term2 = gmp_pow(10, $precision);
+        $N = gmp_mul($term1, $term2);
+
+
 //var_dump($endNumber - $startNumber);
 //var_dump(log($endNumber - $startNumber, 2));
 //var_dump(pow(10, $precision));
-        return $N;
     }
 
     public function generateBitString($N)
