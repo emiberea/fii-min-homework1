@@ -5,3 +5,6 @@ services:
     min_app.service.function:
         class: MIN\AppBundle\Service\FunctionService
         arguments: ["@min_app.service.compute"]
+
+    min_app.model.solver.hill_climbing:
+        class: MIN\AppBundle\Model\Solver\HillClimbingSolver
