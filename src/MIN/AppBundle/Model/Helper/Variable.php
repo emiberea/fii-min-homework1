@@ -7,7 +7,7 @@ class Variable
     /** @var string $name */
     private $name;
 
-    /** @var array $values */
+    /** @var array|\SplFixedArray $values */
     private $values;
 
     /** @var boolean $isArray */
@@ -51,7 +51,7 @@ class Variable
     }
 
     /**
-     * @param array $values
+     * @param array|\SplFixedArray $values
      */
     public function setValues($values)
     {
@@ -68,7 +68,7 @@ class Variable
     }
 
     /**
-     * @param array $value
+     * @param array|\SplFixedArray $value
      */
     public function setValue($value)
     {

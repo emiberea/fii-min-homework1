@@ -8,3 +8,6 @@ services:
 
     min_app.model.solver.hill_climbing:
         class: MIN\AppBundle\Model\Solver\HillClimbingSolver
+
+    min_app.model.solver.genetic:
+        class: MIN\AppBundle\Model\Genetic\GeneticSolver

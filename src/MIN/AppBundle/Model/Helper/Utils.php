@@ -18,4 +18,14 @@ class Utils
 
         return $result;
     }
+
+    /**
+     * @param int $min
+     * @param int $max
+     * @return float
+     */
+    public static function randomFloat($min = 0, $max = 1)
+    {
+        return $min + mt_rand() / mt_getrandmax() * ($max - $min);
+    }
 }
