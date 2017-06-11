@@ -5,6 +5,7 @@ namespace MIN\AppBundle\Model\Genetic;
 use MIN\AppBundle\Model\Equation\Equation;
 use MIN\AppBundle\Model\Helper\Constants;
 use MIN\AppBundle\Model\Helper\Utils;
+use MIN\AppBundle\Model\Solver\HillClimbingSolver;
 
 class GeneticSolver
 {
@@ -27,7 +28,7 @@ class GeneticSolver
 
         $pk = $this->generateFirstPopulation($noOfGenes);
         $this->evaluatePopulation($pk);
-//var_dump($pk);die;
+
         $prevFittest = $this->getFittest($pk);
         echo $prevFittest . "\n";
 
@@ -36,11 +37,14 @@ class GeneticSolver
             $newPopulation = $this->selectPopulation($pk);
             $oldChromosomes = $newPopulation->getChromosomes();
             $newChromosomes = $this->crossoverChromosomes($pk);
-//            die('fdsfsaf');
+
             $chromosomeArr = array_merge($oldChromosomes, $newChromosomes);
             $newPopulation->setChromosomes($chromosomeArr);
 
             $this->mutatePopulation($newPopulation);
+
+            // improve using hil climbing
+            $this->improveUsingHillClimbing($newPopulation);
 
             $this->evaluatePopulation($newPopulation);
             $pk = $newPopulation;
@@ -93,7 +97,7 @@ class GeneticSolver
         for ($i = 0; $i < $noOfGenes; $i++) {
             $result[$i] = Utils::generate($this->noOfBits);
         }
-//var_dump(new Chromosome($result));die;
+
         return new Chromosome($result);
     }
 
@@ -107,16 +111,12 @@ class GeneticSolver
 
         foreach ($population->getChromosomes() as $chromosome) {
             $eval = $this->evaluateChromosome($chromosome);
-//            var_dump(1 / $eval);
-//            var_dump(round(1 / $eval, Constants::PRECISION));
             $chromosome->setFitness(round(1 / $eval, Constants::PRECISION));
             $chromosome->setEval($eval);
 
             $fitness += $chromosome->getFitness();
         }
 
-//        die;
-        // TODO: check if we need to return any value
         $population->setEval($totalEval);
         $population->setFitness($fitness);
     }
@@ -129,14 +129,9 @@ class GeneticSolver
     {
         // TODO: review here
         for ($i = 0; $i < count($chromosome->getGenes()); $i++) {
-//            var_dump($this->equation->getX()->getValues());
-
             $this->equation->getX()->getValues()[$i] = $this->equation->getConstraint()->wrapValue($chromosome->getGenes()[$i], $this->noOfBits, Constants::PRECISION);
-//            var_dump($this->equation->getX()->getValues());
-//            die;
         }
 
-//        return $this->equation->getValue();
         return round($this->equation->getValue(), Constants::PRECISION);
     }
 
@@ -203,16 +198,11 @@ class GeneticSolver
             $second = $this->chooseChromosome($pk);
             $crossoverPosition = mt_rand(0, count($first->getGenes()) - 1);
 
-//            var_dump(count($first->getGenes()));die;
             $firstGenes = array();
             for ($j = 0; $j < count($first->getGenes()); $j++) {
                 if ($j  < $crossoverPosition) {
-//                    var_dump('first');
-//                    var_dump($first->getGenes()[$i]);
                     $firstGenes[$j] = $first->getGenes()[$j];
                 } else {
-//                    var_dump('second');
-//                    var_dump($first->getGenes()[$i]);
                     $firstGenes[$j] = $second->getGenes()[$j];
                 }
             }
@@ -244,6 +234,24 @@ class GeneticSolver
 
             $selGene = mt_rand(0, count($chromosome->getGenes()) - 1);
             $chromosome->getGenes()[$selGene] = $this->switchBit($chromosome->getGenes()[$selGene], mt_rand(0, $this->noOfBits - 1));
+        }
+    }
+
+    /**
+     * @param Population $pkp1
+     */
+    private function improveUsingHillClimbing(Population $pkp1)
+    {
+        $hillClimbingSolver = new HillClimbingSolver();
+
+        foreach ($pkp1->getChromosomes() as $chromosome) {
+            $r = Utils::randomFloat();
+            if ($r < Constants::AG_HC_CHANCE) {
+                $solver = $hillClimbingSolver->solve($this->equation, $chromosome->getGenes());
+                $chromosome->setEval($solver->getFunctionResult());
+                $chromosome->setGenes($solver->getValues());
+                $chromosome->setFitness(round(1 / $solver->getFunctionResult(), Constants::PRECISION));
+            }
         }
     }
 

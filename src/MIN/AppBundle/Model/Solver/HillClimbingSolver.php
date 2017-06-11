@@ -17,10 +17,10 @@ class HillClimbingSolver
     public function solve(Equation $equation, array $startingSolution = null)
     {
         $this->equation = $equation;
-        $size = $this->equation->getN()->getValue();
-        $maxValue = $this->equation->getConstraint()->getMaxValue();
+        $size = $this->equation->getN()->getValue(); // 3
+        $maxValue = $this->equation->getConstraint()->getMaxValue(); // 5.12
 
-        $this->noOfBits = (int) ceil(log($maxValue * pow(10, Constants::SOLUTION_PRECISION))) + 1;
+        $this->noOfBits = (int) ceil(log($maxValue * pow(10, Constants::SOLUTION_PRECISION))) + 1; // 10
 //        $this->equation->getX()->setValues(array());
         $this->equation->getX()->setValues(new \SplFixedArray($size));
 
@@ -30,7 +30,7 @@ class HillClimbingSolver
         $best->setFunctionResult($this->evaluate($best->getValues()));
 
         $steps = 0;
-        $precisionValue = 1 / pow(10, Constants::SOLUTION_PRECISION);
+        $precisionValue = 1 / pow(10, Constants::PRECISION);
 
         while ($steps++ < Constants::HC_MAX_STEPS && (abs($best->getFunctionResult() - $precisionValue) > $precisionValue)) {
             $current = new Solution();

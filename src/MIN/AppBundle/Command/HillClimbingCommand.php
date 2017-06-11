@@ -47,12 +47,12 @@ class HillClimbingCommand extends ContainerAwareCommand
         self::$hillClimbingSolver = $this->getContainer()->get('min_app.model.solver.hill_climbing');
         self::$geneticSolver = $this->getContainer()->get('min_app.model.solver.genetic');
 
-//        $this->printSolution(self::solveRastriginsWithHC(), 'Rastrigins');
+        $this->printSolution(self::solveRastriginsWithHC(), 'Rastrigins');
 //        $this->printSolution(self::solveGriewangksWithHC(), 'Griewangks');
 //        $this->printSolution(self::solveRosenbrocksWithHC(), 'Rosenbrocks');
 //        $this->printSolution(self::solveSixHumpWithHC(), 'SixHump');
 
-        $this->printSolutionGA(self::solveRastriginsWithGA(), 'Rastrigins');
+//        $this->printSolutionGA(self::solveRastriginsWithGA(), 'Rastrigins');
 //        $this->printSolutionGA(self::solveGriewangksWithGA(), 'Griewangks');
 //        $this->printSolutionGA(self::solveRosenbrocksWithGA(), 'Rosenbrocks');
 //        $this->printSolutionGA(self::solveSixHumpWithGA(), 'SixHump');
